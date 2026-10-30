@@ -7470,6 +7470,8 @@ body:has(#activeGameStage:not(.hidden)) { overflow: hidden; }
       function renderFrame() {
         if (!rpgState.active) return;
         tick += 0.05;
+        const rw = Math.round(canvas.parentElement.getBoundingClientRect().width);
+        if (rw > 0 && (canvas.width !== Math.max(320, rw) || canvas.height !== canvas.clientHeight)) resizeRpgCanvas();
         const w = canvas.width;
         const h = canvas.height;
 
@@ -7499,9 +7501,10 @@ body:has(#activeGameStage:not(.hidden)) { overflow: hidden; }
         ctx.stroke();
 
         const g = appState.activeGrade;
-        const heroX = w * 0.22;
+        const sideOff = w < 640 ? w * 0.28 : Math.min(w * 0.2, 250);
+        const heroX = w / 2 - sideOff;
         const heroY = h * 0.52 + Math.sin(tick) * 5;
-        const bossX = w * 0.78;
+        const bossX = w / 2 + sideOff;
         const bossY = h * 0.50 + Math.cos(tick * 1.1) * 6;
 
         const spH = Math.min(125, h * 0.66);
